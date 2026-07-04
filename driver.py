@@ -118,12 +118,14 @@ class Driver:
 
 
     def esperar_elemento_aparecer(self, by, valor):
-        wait = WebDriverWait(self._driver, 2)
-        while True:
+        wait = WebDriverWait(self._driver, 3)
+        c = 0
+        while c != 3:
             try:
                 elemento = self.esperar_elemento(by, valor, wait)
                 return elemento
             except TimeoutException:
+                c += 1
                 continue
 
 
