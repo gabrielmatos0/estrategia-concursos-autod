@@ -11,5 +11,18 @@ with open(json_path, 'r') as file:
 if __name__ == '__main__':
     email = config['email']
     password = config['password']
+
     url_class = config['url_class']
-    main(url_class, email, password)
+
+    download_pdfs = config['download_pdfs']
+    download_videos = config['download_videos']
+    video_resolution = config['video_resolution'] # 720p, 480p, 360p
+
+    main(
+        url_class,
+        email,
+        password,
+        download_pdfs,
+        download_videos,
+        video_resolution,
+    )

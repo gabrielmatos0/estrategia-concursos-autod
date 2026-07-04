@@ -143,13 +143,14 @@ def login(driver:Driver, email:str, password:str):
 
 
 
-def main(url_aula:str, email, password):
+def main(url_aula:str, email, password, download_pdfs:bool=True, download_videos:bool=True, video_resolution="480p"):
     if not os.path.exists(DOWNLOAD_DIR):
         os.mkdir(DOWNLOAD_DIR)
 
     driver = Driver('EstrategiaConcursos')
     driver.get(url_aula)
     driver.driver.maximize_window()
+
     login(driver, email, password)
     NOME_CURSO = get_nome_curso(driver)
     class_list = driver.esperar_elementos(By.CLASS_NAME, 'LessonList-item')
@@ -164,8 +165,13 @@ def main(url_aula:str, email, password):
             last_class = True
 
         driver.focar_janela(web_element=class_div)
-        get_pdfs(driver, last_class, NOME_CURSO, NOME_AULA)
-        get_videos(driver, NOME_CURSO, NOME_AULA, '480p')
+
+        if download_videos:
+            get_videos(driver, NOME_CURSO, NOME_AULA, video_resolution)
+        sleep(.5)
+        if download_pdfs:
+            get_pdfs(driver, last_class, NOME_CURSO, NOME_AULA)
+
         sleep(1)
 
 if __name__ == '__main__':
