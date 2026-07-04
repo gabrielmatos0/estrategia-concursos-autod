@@ -1,4 +1,5 @@
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
 from driver import Driver
 from time import sleep
 import requests
@@ -128,13 +129,28 @@ def get_videos(driver:Driver, NOME_CURSO, NOME_AULA, video_resolution="480p"):
             break
 
 
-def main(url_aula:str):
+def login(driver:Driver, email:str, password:str):
+    email_input = driver.esperar_elemento_aparecer(By.NAME, 'loginField')
+
+    if not email_input:
+        return
+
+    email_input.send_keys(email)
+    sleep(.5)
+    driver.driver_actions.send_keys(Keys.TAB).send_keys(password).perform()
+
+    driver.esperar_elemento(By.CSS_SELECTOR, 'button.ui-w-full').click()
+
+
+
+def main(url_aula:str, email, password):
     if not os.path.exists(DOWNLOAD_DIR):
         os.mkdir(DOWNLOAD_DIR)
 
     driver = Driver('EstrategiaConcursos')
     driver.get(url_aula)
     driver.driver.maximize_window()
+    login(driver, email, password)
     NOME_CURSO = get_nome_curso(driver)
     class_list = driver.esperar_elementos(By.CLASS_NAME, 'LessonList-item')
 
@@ -148,7 +164,7 @@ def main(url_aula:str):
             last_class = True
 
         driver.focar_janela(web_element=class_div)
-        # get_pdfs(driver, last_class, NOME_CURSO, NOME_AULA)
+        get_pdfs(driver, last_class, NOME_CURSO, NOME_AULA)
         get_videos(driver, NOME_CURSO, NOME_AULA, '480p')
         sleep(1)
 
