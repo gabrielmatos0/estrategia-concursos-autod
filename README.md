@@ -24,3 +24,5 @@ A configuração será feita pelo arquivo ```config.json``` para
 - [x] Escolher a resolução dos vídeos (360p 480p, 720p)
 ![alt text](image.png)
 
+
+> **OBS**: o arquivo ```config-example.json``` serve de exemplo para mostrar a estrutura do json, **crie um arquivo chamado ```config.json``` e rode o ```main.py```**
