@@ -53,11 +53,10 @@ def req_download(url:str, file_name:str):
     
 
 def get_pdfs(driver:Driver, last_class, NOME_CURSO, NOME_AULA):
-
     btns = driver.esperar_elementos(By.CLASS_NAME, 'LessonButton')
 
     ### BAIXAR PDFs DA AULA
-    for i, btn in enumerate(btns):
+    for btn in btns:
         if not 'Baixar Livro Eletrônico'.lower().strip() in btn.text.lower().strip():
             continue
 
@@ -71,7 +70,6 @@ def get_pdfs(driver:Driver, last_class, NOME_CURSO, NOME_AULA):
             print('PDF baixado!')
             continue
         print('erro ao baixar PDF...')
-        continue
 
         ### se a jnela de avaliação do curso aparecer novamente, finalizar a função "ignorar_pesquisa()"
         ### 1. devo clicar em "ignorar pesquisa" e no ícore para fechar ( X )
