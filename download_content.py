@@ -41,10 +41,12 @@ def ignorar_pesquisa(driver):
 
 def req_download(url:str, file_name:str):
     try:
+        print('Baixando arquivo...')
         response = requests.get(url)
 
         with open(file_name, 'wb') as file:
             file.write(response.content)
+        print('Arquivo baixado!')
         return True
     except:
         return False
@@ -91,20 +93,21 @@ def get_videos(driver:Driver, NOME_CURSO, NOME_AULA, video_resolution="480p"):
 
     for i, video in enumerate(videos):
         NOME_VIDEO = get_nome_video(video)
-        driver.focar_janela(web_element=video)
+        driver.move_and_click(video)
         sleep(2)
 
         ### procurar elemento com "Opções de Download"
         if i == 0:
             elements = driver.esperar_elementos(By.CLASS_NAME, 'Collapse-header-container')
 
+            sleep(.5)
             for ele in elements:
                 text = ele.text.strip()
+                sleep(.5)
                 if 'Opções de download' in text:
-                    # ele.find_element(By.CLASS_NAME, 'Collapse-header-arrow ').click()
-                    driver.focar_janela(web_element=ele)
-                    # ele.click()
-                    ####
+                    sleep(.5)
+                    driver.move_and_click(ele)
+                    sleep(.5)
                     break
 
         ### procurar elementos de resolução de vídeo
@@ -118,7 +121,7 @@ def get_videos(driver:Driver, NOME_CURSO, NOME_AULA, video_resolution="480p"):
             if video_resolution not in btn_text:
                 continue
 
-            video_name = os.path.join(DOWNLOAD_DIR, f'{NOME_CURSO}_{NOME_AULA}_VD-{video_resolution}_{NOME_VIDEO}.mp4')
+            video_name = os.path.join(DOWNLOAD_DIR, f'{NOME_VIDEO}.mp4')
             url_video = btn.get_attribute('href')
 
             if req_download(url_video, video_name):
@@ -142,7 +145,6 @@ def login(driver:Driver, email:str, password:str):
     driver.esperar_elemento(By.CSS_SELECTOR, 'button.ui-w-full').click()
 
 
-
 def main(url_aula:str, email, password, download_pdfs:bool=True, download_videos:bool=True, video_resolution="480p"):
     if not os.path.exists(DOWNLOAD_DIR):
         os.mkdir(DOWNLOAD_DIR)
@@ -164,7 +166,7 @@ def main(url_aula:str, email, password, download_pdfs:bool=True, download_videos
         if i == len(class_list) - 1:
             last_class = True
 
-        driver.focar_janela(web_element=class_div)
+        driver.move_and_click(class_div)
 
         if download_videos:
             get_videos(driver, NOME_CURSO, NOME_AULA, video_resolution)

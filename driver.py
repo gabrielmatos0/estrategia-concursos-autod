@@ -85,6 +85,16 @@ class Driver:
         elemento_janela = self.esperar_elemento(by_janela, valor_janela)
         self.driver_actions.move_to_element(elemento_janela).click().perform()
 
+    def move_and_click(self, web_element):
+        self.driver.execute_script("""
+        arguments[0].scrollIntoView({
+            behavior: 'auto',
+            block: 'center',
+            inline: 'center'
+        });
+        """, web_element)
+        self.driver_actions.move_to_element(web_element).click().perform()
+
 
     def focar_janela(self, by_janela=None, valor_janela=None, web_element=None, element_to_click=None): 
         if not web_element:
