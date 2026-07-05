@@ -1,6 +1,6 @@
 {
-    "email": "",
-    "password": "",
+    "email": "seuemail@empresa.com",
+    "password": "suasenha",
     "url_class": "https://www.estrategiaconcursos.com.br/app/dashboard/cursos/xxxxxx/aulas",
     "download_videos": true,
     "download_pdfs": true,
